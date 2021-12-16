@@ -1,0 +1,248 @@
+{% extends 'Main.html' %} 
+{% load static %} 
+{% block content %}
+
+<main>
+  <div class="container-messege">
+    <div class="container-right">
+      <div class="cont-right-top">
+        <input type="text" placeholder="Search" />
+        <i class="bi bi-pencil-square"></i>
+      </div>
+      <hr class="messege-line" />
+      <div class="cont-right-bottom">
+        <ul>
+          {% for thread in Threads %}
+          <li
+            class="chat"
+            chat-id="seaxana_heer"
+            other-user-id="{% if thread.first_person == user %}
+                    {{ thread.second_person.id }}
+                {% else %}
+                    {{ thread.first_person.id }}
+                {% endif %}"
+            thread-id="{{ thread.id }}"
+            other-user-name="
+                {% if thread.first_person == user %}
+                    {{ thread.second_person.username }}
+                {% else %}
+                    {{ thread.first_person.username }}
+                {% endif %}
+                "
+          >
+            <div class="messege-main">
+              <div class="img-span-name">
+                <img src="{% static 'Avatar.png' %}" alt="" />
+                <div class="name-info">
+                  <span class="name">
+                    {% if thread.first_person == user %}
+                    <span>{{ thread.second_person.username }}</span>
+                    {% else %}
+                    <span>{{ thread.first_person.username }}</span>
+                    {% endif %}
+                  </span>
+                  <span class="info">I was wondering...</span>
+                </div>
+              </div>
+              <span class="time">12:00 PM</span>
+            </div>
+            <hr class="messege-line" />
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="container-left">
+      <div class="left-top-cont">
+        <span class="left-middle-to"
+          >To:
+          <span class="left-top-name"></span>
+        </span>
+      </div>
+
+      <div id="left-middle-cont">
+        <div id='message-body'>
+        {% for thread in Threads %} 
+        {% for chat in thread.thread_id.all %} 
+        {% if chat.sent_by == user %}
+
+        <div class="right-main-messege">
+          <span>{{chat.msg}}</span>
+        </div>
+        {% else %}
+        <div class="left-main-messege">
+          <span>{{chat.msg}}</span>
+        </div>
+        {% endif %} 
+        {% endfor %} 
+        {% endfor %}
+      </div>
+      </div>
+
+      
+      <div class="left-bottom-cont">
+        {% if user.is_authenticated %}
+        <input type="hidden" id="logged-in-user" value="{{ user.id }}" />
+        {% endif %}
+        <i class="bi bi-paperclip"></i>
+        <input type="text" id="chat-message-input" />
+        <i class="bi bi-emoji-smile"></i>
+        <button
+          type="submit"
+          id="chat-message-submit"
+          style="border: none; padding: 10px"
+        >
+          <i class="bi bi-cursor"></i>
+        </button>
+      </div>
+    
+
+    </div>
+  </div>
+
+  {{ room_name|json_script:"room-name" }}
+</main>
+
+<!-- <script>
+  setInterval(my_function,5000);
+  function my_function(){
+    $('#message-body').html(`
+    {% for thread in Threads %} 
+        {% for chat in thread.thread_id.all %} 
+        {% if chat.sent_by == user %}
+
+        <div class="right-main-messege">
+          <span>{{chat.msg}}</span>
+        </div>
+        {% else %}
+        <div class="left-main-messege">
+          <span>{{chat.msg}}</span>
+        </div>
+        {% endif %} 
+        {% endfor %} 
+        {% endfor %}
+    `);
+}
+</script> -->
+
+
+
+<script>
+  const chatSocket = new WebSocket(
+    "ws://" + window.location.host + "/ws/"
+  );
+
+  var list = document.querySelectorAll(".chat");
+  list.forEach(function (item) {
+    item.onclick = function (e) {
+      // here After selecting the chat id what we have to do is to active the chat
+      var roomName1 = item.getAttribute("other-user-name");
+      console.log(roomName1);
+
+      var dark_cells = item.children;
+      dark_cells[0].classList.add("dark-cell");
+      var dark_spans = dark_cells[0].getElementsByTagName("span");
+      dark_spans[0].setAttribute(
+        "style",
+        "color: #fff;background-color: #242424;"
+      );
+      dark_spans[1].setAttribute(
+        "style",
+        "color: #fff;background-color: #242424;"
+      );
+      dark_spans[2].setAttribute(
+        "style",
+        "color: #fff;background-color: #242424;"
+      );
+
+      const chatTo = document.querySelector(".left-top-name");
+      chatTo.innerHTML = roomName1;
+
+      // here we have to send the message and recieve the message
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        new_message(data);
+
+        
+        
+      };
+
+      chatSocket.onclose = function (e) {
+        console.error("Chat socket closed unexpectedly");
+        //while (container.hasChildNodes()) {
+        //    container.removeChild(container.lastChild);
+        //}
+      };
+
+      document.querySelector("#chat-message-input").focus();
+      document.querySelector("#chat-message-input").onkeyup = function (e) {
+        if (e.keyCode === 13) {
+          // enter, return
+          document.querySelector("#chat-message-submit").click();
+        }
+      };
+
+      document.querySelector("#chat-message-submit").onclick = function (e) {
+        const messageInputDom = document.querySelector("#chat-message-input");
+        const sent_by = document.querySelector("#logged-in-user").value;
+        const sent_to = item.getAttribute("other-user-id");
+        const thread_id = item.getAttribute("thread-id");
+        const message = messageInputDom.value;
+        // here we have to send the message
+        chatSocket.send(
+          JSON.stringify({
+            message: message,
+            sent_by: sent_by,
+            sent_to: sent_to,
+            thread_id: thread_id,
+          })
+        );
+        // emptying the textarea
+        messageInputDom.value = "";
+      };
+
+      // fuction to create div component that will be added to the left-middle-cont div
+      // to show the message
+      // call the function to send the message in the chat socket .onmessage
+      function new_message(data) {
+        
+        const sent_by = document.querySelector('#logged-in-user').value;
+        console.log(sent_by);
+        console.log(data.sent_by);
+        console.log(data.sent_to.trim());
+        let message_new = document.createElement('div');
+        if (data.sent_to.trim() == sent_by) {
+          
+          message_new.setAttribute("class", "left-main-messege");
+          let new_span1 = document.createElement("span");
+          new_span1.textContent = data.message;
+        
+          message_new.appendChild(new_span1);
+          let container = document.querySelector("#left-middle-cont");
+          container.appendChild(message_new);
+          container.scrollTop = container.scrollHeight;
+        } else {
+          
+          message_new.setAttribute("class", "right-main-messege");
+          let new_span1 = document.createElement("span");
+          new_span1.textContent = data.message;
+        
+          message_new.appendChild(new_span1);
+          let container = document.querySelector("#left-middle-cont");
+          container.appendChild(message_new);
+          container.scrollTop = container.scrollHeight;
+        }
+        
+        
+        
+
+        
+        
+      }
+    };
+  });
+</script>
+
+<!--main-->
+{% endblock content %}
+<!--offcanvas right-->

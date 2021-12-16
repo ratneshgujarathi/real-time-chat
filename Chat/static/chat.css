@@ -1,0 +1,263 @@
+/* ===============================massege===============================
+------------------------------------------------------------------------
+======================================================================== */
+        .container-messege {
+            background-color: white;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+
+
+        }
+
+        /* ========================right side messege====== */
+        .container-right {
+            width: 40%;
+        }
+
+        .cont-right-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 0px;
+        }
+
+        .cont-right-top input {
+            border: 1px solid #dadada;
+            width: 68%;
+            height: 42px;
+            border-radius: 75px;
+            padding: 21px;
+            outline: none;
+            background-color: #ECEFF1;
+        }
+
+        .cont-right-top i {
+            color: white;
+            background-color: #000000;
+            padding: 14px;
+            border-radius: 50px;
+            margin-left: 5%;
+            cursor: pointer;
+        }
+
+        .cont-right-bottom ul li {
+            list-style: none;
+        }
+
+        .cont-right-bottom ul {
+            padding: 0;
+            overflow-y: auto;
+            height: 78%;
+        }
+
+        .cont-right-bottom ul::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .cont-right-bottom ul::-webkit-scrollbar-thumb {
+            background-color: #d9d9d9;
+        }
+
+
+        .messege-main {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px;
+            cursor: pointer;
+        }
+
+        /* .messege-main span:hover {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+} */
+        .messege-main:hover {
+            background-color: #242424;
+            color: rgb(255, 255, 255);
+        }
+
+        .messege-main:hover span {
+            background-color: #242424;
+            color: rgb(255, 255, 255);
+        }
+
+        /* .messege-main:active {
+            background-color: #242424;
+            color: rgb(255, 255, 255);
+        }
+
+        .messege-main:active span {
+            background-color: #242424;
+            color: rgb(255, 255, 255);
+        } */
+        .dark-cell{
+            background-color: #242424;
+            color: rgb(255, 255, 255);
+        }
+
+        .img-span-name {
+            display: flex;
+            width: 76%;
+        }
+
+        .messege-main img {
+            width: 50px;
+            height: 50px;
+            margin-right: 17px;
+            border-radius: 91px;
+        }
+
+        .name-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+        }
+
+        .name {
+            font-weight: 500;
+        }
+
+        .info {
+            color: #949494;
+        }
+
+        .time {
+            color: #949494;
+            width: 23%;
+        }
+
+        .messege-line {
+            margin: 0;
+            border: none;
+            background-color: gray;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        /* ===========left side messege=============== */
+        .container-left {
+            width: 100%;
+            border-left: 1px solid #e4e4e4;
+        }
+
+        .left-top-cont {
+            padding: 16px;
+            background: #eceff1;
+            padding-left: 60px;
+        }
+
+        .left-middle-to {
+            color: #949494;
+        }
+
+        .left-top-name {
+            color: black;
+            font-weight: 500;
+        }
+
+        #left-middle-cont {
+            padding: 1% 5%;
+            display: flex;
+            flex-direction: column;
+            height: 77%;
+            overflow-y: scroll;
+        }
+
+        #left-middle-cont::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #left-middle-cont::-webkit-scrollbar-thumb {
+            background-color: #d9d9d9;
+        }
+
+        .left-timebar {
+            display: flex;
+            justify-content: center;
+            color: #949494;
+            margin-bottom: 4%;
+        }
+
+        .left-main-messege {
+            display: flex;
+            justify-content: left;
+
+        }
+
+        .left-main-messege span {
+            margin-bottom: 1%;
+            color: white;
+            background-color: #3e3e3e;
+            ;
+            padding: 13px 14px;
+            border-radius: 5px;
+        }
+
+
+        .right-main-messege {
+            display: flex;
+            justify-content: right;
+
+        }
+
+        .right-main-messege span {
+            margin-bottom: 1%;
+            color: rgb(255, 249, 249);
+            background-color: #525252;
+            ;
+            padding: 13px 14px;
+            border-radius: 5px;
+        }
+
+
+
+        .left-bottom-cont {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1%;
+        }
+
+        .bi-paperclip {
+            font-size: 20px;
+            background-color: #ECEFF1;
+            padding: 10px;
+            border-radius: 5px 0px 0px 5px;
+            color: #949494;
+        }
+
+        .left-bottom-cont input {
+            border: none;
+            outline: none;
+            background-color: #ECEFF1;
+            height: 50px;
+            width: 74%;
+        }
+
+        .bi-emoji-smile {
+            font-size: 20px;
+            background-color: #ECEFF1;
+            padding: 10px;
+            color: #949494;
+        }
+
+        .bi-cursor {
+            font-size: 20px;
+            background-color: #ECEFF1;
+            /* height: 50px; */
+            padding: 10px;
+            border-radius: 0px 5px 5px 0px;
+            color: #949494;
+        }
+
+@media only screen and (max-width: 768px) { 
+    .profile-img{
+        margin-top: -40px;
+        
+    }
+    .profile-img img{
+            width: 70px;
+            height: 70px;
+    }
+}
